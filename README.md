@@ -1,6 +1,6 @@
-![Version](https://img.shields.io/github/v/release/farfar/homeassistant-seatconnect?include_prereleases)
+![Version](https://img.shields.io/github/v/release/jressel01/homeassistant-seatconnect?include_prereleases)
 ![PyPi](https://img.shields.io/pypi/v/seatconnect?label=latest%20pypi)
-![Downloads](https://img.shields.io/github/downloads/farfar/homeassistant-seatconnect/total)
+![Downloads](https://img.shields.io/github/downloads/jressel01/homeassistant-seatconnect/total)
 
 # Seat Connect - A Home Assistant custom component for Seat Connect
 
