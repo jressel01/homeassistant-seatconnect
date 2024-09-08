@@ -233,15 +233,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         data.instruments.add(instrument)
         components.add(PLATFORMS[instrument.component])
 
-    for component in components:
-        coordinator.platforms.append(component)
-    await hass.config_entries.async_forward_entry_setups(entry, components)
-
     hass.data[DOMAIN][entry.entry_id] = {
         UPDATE_CALLBACK: update_callback,
         DATA: data,
         UNDO_UPDATE_LISTENER: entry.add_update_listener(_async_update_listener),
     }
+
+    coordinator.platforms.extend(components)
+    await hass.config_entries.async_forward_entry_setups(entry, components)
 
     # Service functions
     async def get_car(service_call):
