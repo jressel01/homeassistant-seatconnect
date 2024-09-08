@@ -235,8 +235,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     for component in components:
         coordinator.platforms.append(component)
-        )
-        await hass.config_entries.async_forward_entry_setups(entry, components)
+    await hass.config_entries.async_forward_entry_setups(entry, components)
 
     hass.data[DOMAIN][entry.entry_id] = {
         UPDATE_CALLBACK: update_callback,
