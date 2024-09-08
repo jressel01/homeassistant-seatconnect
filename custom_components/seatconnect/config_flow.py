@@ -1,3 +1,4 @@
+import asyncio
 import homeassistant.helpers.config_validation as cv
 import logging
 import voluptuous as vol
@@ -34,10 +35,10 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 class SeatConnectConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    VERSION = 2
-    task_login = None
-    task_finish = None
-    task_get_vehicles = None
+    VERSION = 3
+    task_login: asyncio.Task | None = None
+    task_finish: asyncio.Task | None = None
+    task_get_vehicles: asyncio.Task | None = None
     entry = None
 
     def __init__(self):
@@ -185,14 +186,15 @@ class SeatConnectConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             ),
         )
 
-   # Authentication and login
     async def async_step_login(self, user_input=None):
+        """Authentication and login."""
         if not self.task_login:
             self.task_login = self.hass.async_create_task(self._async_task_login())
 
             return self.async_show_progress(
                 step_id="login",
                 progress_action="task_login",
+                progress_task=self.task_login,
             )
 
         # noinspection PyBroadException
@@ -208,12 +210,14 @@ class SeatConnectConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return await self.async_step_get_vehicles()
 
     async def async_step_get_vehicles(self, user_input=None):
+        """Get vehicles step."""
         if not self.task_get_vehicles:
             self.task_get_vehicles = self.hass.async_create_task(self._async_task_get_vehicles())
 
             return self.async_show_progress(
                 step_id="get_vehicles",
-                progress_action="task_get_vehicles"
+                progress_action="task_get_vehicles",
+                progress_task=self.task_get_vehicles,
             )
 
         # noinspection PyBroadException
